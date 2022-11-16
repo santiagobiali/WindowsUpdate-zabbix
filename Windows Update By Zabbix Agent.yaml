@@ -1,0 +1,101 @@
+zabbix_export:
+  version: '6.2'
+  date: '2022-11-16T14:38:38Z'
+  template_groups:
+    -
+      uuid: 721284fdd5a5431490496fc0a7cbf410
+      name: Windows
+  templates:
+    -
+      uuid: 481bb044969d4a3cb3d2cf8d1c1688c3
+      template: 'Windows Update by Zabbix Agent'
+      name: 'Windows Update by Zabbix Agent'
+      groups:
+        -
+          name: Windows
+      items:
+        -
+          uuid: ad69ee0a573a41bea3ee1dd0d0282ccc
+          name: 'Feature Pack Update'
+          type: DEPENDENT
+          key: windowsupdate.featurepacks
+          delay: '0'
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - $.FeaturePacks
+          master_item:
+            key: windowsupdate.getitems
+          tags:
+            -
+              tag: Application
+              value: 'Windows Update'
+        -
+          uuid: ad429e2b78b14cf8a8f985c46f416cd4
+          name: 'Get Updates'
+          type: ZABBIX_ACTIVE
+          key: windowsupdate.getitems
+          delay: 30m
+          history: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            -
+              tag: Application
+              value: 'Windows Update'
+        -
+          uuid: edfd157c1a414c6c96f9c8904390010b
+          name: 'Security Updates'
+          type: DEPENDENT
+          key: windowsupdate.secupdates
+          delay: '0'
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - $.SecurityUpdates
+          master_item:
+            key: windowsupdate.getitems
+          tags:
+            -
+              tag: Application
+              value: 'Windows Update'
+        -
+          uuid: 2b99eba1359b40489316fb378dce4793
+          name: 'Update Rollups'
+          type: DEPENDENT
+          key: windowsupdate.updaterollups
+          delay: '0'
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - $.UpdateRollups
+          master_item:
+            key: windowsupdate.getitems
+          tags:
+            -
+              tag: Application
+              value: 'Windows Update'
+        -
+          uuid: 74e014b274864f58886cb88458856def
+          name: Updates
+          type: DEPENDENT
+          key: windowsupdate.updates
+          delay: '0'
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - $.Updates
+          master_item:
+            key: windowsupdate.getitems
+          tags:
+            -
+              tag: Application
+              value: 'Windows Update'
+      tags:
+        -
+          tag: Application
+          value: 'Windows Update'
